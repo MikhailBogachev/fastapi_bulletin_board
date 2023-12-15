@@ -1,0 +1,9 @@
+.DS_Store
+.venv/
+__pycache__/
+.vscode
+pyvenv.cfg
+.env
+venv
+uploaded_files
+logs
