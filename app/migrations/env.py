@@ -4,11 +4,10 @@ from logging.config import fileConfig
 from sqlalchemy import engine_from_config
 from sqlalchemy import pool
 from alembic import context
-from dotenv import load_dotenv
 
 from models import bulletins, users
+from config import DB_USER, DB_PASS, DB_NAME, DB_HOST
 
-load_dotenv()
 
 config = context.config
 
