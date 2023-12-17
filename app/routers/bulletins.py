@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException
-from schemas.bulletins import BulletinSchema
+from schemas.bulletins import BulletinSchema, BulletinSchemaOut
 
 from db.base import get_session
 from utils import bulletins
@@ -24,17 +24,20 @@ async def add_bulletin(
     bul_type = await bulletins.get_bulletin_type_from_name(session=session, bul_type=bulletin.type)
     print(bul_type)
     if not bul_type.id:
-        # 
-        raise HTTPException(status_code=400, detail=" Unknown bblletin type ")
+        #
+        raise HTTPException(status_code=400, detail=" Unknown bulletin type ")
 
-    new_bul = await bulletins.add_bulletin(
-        session=session, 
+    new_bul_id = await bulletins.add_bulletin(
+        session=session,
         bulletin=bulletin,
         bul_type_id=bul_type.id,
         user_id=current_user._mapping.user_id
         )
-    
-    return 1
+    print(new_bul_id)
+
+    new_bul = await bulletins.get_bulletin_by_id(session=session, bul_id=new_bul_id)
+    print(new_bul)
+    return BulletinSchemaOut(**new_bul[0]._mapping)
 
 
 @router.get("", response_model=list[BulletinSchema])

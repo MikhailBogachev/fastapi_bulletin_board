@@ -29,15 +29,16 @@ async def auth(
     session: AsyncSession = Depends(get_session)
 ):
     user = await users_utils.get_user_by_email(session=session, email=form_data.username)
+    print(user)
     if not user:
         raise HTTPException(status_code=400, detail="Incorrect email or password")
 
     if not users_utils.validate_password(
-        password=form_data.password, hashed_password=user[3]
+        password=form_data.password, hashed_password=user[0][3]
     ):
         raise HTTPException(status_code=400, detail="Incorrect email or password")
 
-    return await users_utils.create_user_token(session=session, user_id=user[0])
+    return await users_utils.create_user_token(session=session, user_id=user[0][0])
 
 @router.get("/users/me", response_model=users.UserBase)
 async def read_users_me(current_user: users.User = Depends(get_current_user)):

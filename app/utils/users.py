@@ -33,7 +33,7 @@ async def get_user_by_email(session: AsyncSession, email: str):
     """ Возвращает информацию о пользователе """
     query = users_table.select().where(users_table.c.email == email)
     result = await session.execute(query)
-    return result.all()[0]
+    return result.all()
 
 
 async def get_user_by_token(session: AsyncSession, token: str):
@@ -50,6 +50,7 @@ async def get_user_by_token(session: AsyncSession, token: str):
 
 async def create_user_token(session: AsyncSession, user_id: int):
     """ Создает токен для пользователя с указанным user_id """
+    print('kuku')
     query = (
         tokens_table.insert()
         .values(expires=datetime.now() + timedelta(weeks=2), user_id=user_id)
@@ -70,7 +71,11 @@ async def create_user(session: AsyncSession, user: user_schema.UserCreate):
 
     user = await session.execute(query)
     user_all = user.all()[0]
+    print(12235235)
+    print(user_all)
     user_id = user_all[0]
+    print(1111)
+    print(user_id)
 
     token = await create_user_token(session=session, user_id=user_id)
     token_dict = {"token": UUID(token[0]), "expires": token[1]}
