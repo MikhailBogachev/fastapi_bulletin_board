@@ -7,7 +7,9 @@ from utils import users as users_utils
 from sqlalchemy.ext.asyncio import AsyncSession
 
 
-router = APIRouter()
+router = APIRouter(
+    tags=['Bulletins']
+)
 
 
 @router.post("/sign-up", response_model=users.User)

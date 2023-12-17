@@ -1,11 +1,6 @@
-from datetime import datetime
-from fastapi import Depends, FastAPI
-from pydantic import BaseModel
-from sqlalchemy.ext.asyncio import AsyncSession
-
-from db.base import get_session
-from services.bulletin_service import get_bulletins as get_bulletins_from_db
-from routers import users
+from fastapi import FastAPI
+from routers.users import router as user_router
+from routers.bulletins import router as bulletin_router
 
 
 app = FastAPI(
@@ -18,31 +13,15 @@ app = FastAPI(
 def read_root():
     return {"Hello": "World"}
 
-app.include_router(users.router)
-
-
-class BulletinSchema(BaseModel):
-    #id: int
-    name: str
-    description: str
-    #created_at: datetime
-    type: str
-    author: str = 'test'
+app.include_router(user_router)
+app.include_router(bulletin_router)
 
 
 
-@app.post("/bulletins/")
-async def add_bulletin(
-    bullet: BulletinSchema,
-    session: AsyncSession = Depends(get_session)
-):
-    pass
 
 
-@app.get("/bulletins", response_model=list[BulletinSchema])
-async def get_bulletins(session: AsyncSession = Depends(get_session)):
-    bulletins = await get_bulletins_from_db(session)
-    return bulletins
+
+
 
 if __name__ == "__main__":
     import uvicorn
