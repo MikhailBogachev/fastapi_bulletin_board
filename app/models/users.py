@@ -4,14 +4,6 @@ from sqlalchemy.dialects.postgresql import UUID
 
 metadata = sqlalchemy.MetaData()
 
-
-user_roles_table = sqlalchemy.Table(
-    "user_roles",
-    metadata,
-    sqlalchemy.Column("id", sqlalchemy.Integer, primary_key=True),
-    sqlalchemy.Column("name", sqlalchemy.String(100))
-)
-
 users_table = sqlalchemy.Table(
     "users",
     metadata,
@@ -20,14 +12,18 @@ users_table = sqlalchemy.Table(
     sqlalchemy.Column("name", sqlalchemy.String(100)),
     sqlalchemy.Column("hashed_password", sqlalchemy.String()),
     sqlalchemy.Column(
-        "is_active",
+        "is_banned",
         sqlalchemy.Boolean(),
-        server_default=sqlalchemy.sql.expression.true(),
+        server_default=sqlalchemy.sql.expression.false(),
         nullable=False,
     ),
-    sqlalchemy.Column("role", sqlalchemy.ForeignKey("user_roles.id"))
+    sqlalchemy.Column(
+        "is_admin",
+        sqlalchemy.Boolean(),
+        server_default=sqlalchemy.sql.expression.false(),
+        nullable=False,
+    )
 )
-
 
 tokens_table = sqlalchemy.Table(
     "tokens",

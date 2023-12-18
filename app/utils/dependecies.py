@@ -1,9 +1,9 @@
-from typing import Annotated
-from db.base import get_session
-from utils import users as users_utils
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.ext.asyncio import AsyncSession
+
+from db.base import get_session
+from utils import users as users_utils
 
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth")

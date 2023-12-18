@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+
 from routers.users import router as user_router
 from routers.bulletins import router as bulletin_router
 
@@ -9,19 +10,8 @@ app = FastAPI(
 )
 
 
-@app.get("/")
-def read_root():
-    return {"Hello": "World"}
-
 app.include_router(user_router)
 app.include_router(bulletin_router)
-
-
-
-
-
-
-
 
 if __name__ == "__main__":
     import uvicorn

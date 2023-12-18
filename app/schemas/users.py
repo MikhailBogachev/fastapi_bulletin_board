@@ -1,6 +1,6 @@
 from datetime import datetime
 from typing import Optional
-from pydantic import UUID4, BaseModel, EmailStr, Field, validator
+from pydantic import UUID4, BaseModel, EmailStr, validator
 
 
 class UserCreate(BaseModel):
@@ -15,10 +15,12 @@ class UserBase(BaseModel):
     id: int
     email: EmailStr
     name: str
+    is_banned: bool
+    is_admin: bool
 
 
 class TokenBase(BaseModel):
-    token: UUID4 #= Field(..., alias="access_token")
+    token: UUID4
     expires: datetime
     token_type: Optional[str] = "bearer"
 
